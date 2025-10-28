@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Playwrite+AU+TAS:wght@100..400&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+
+   
+
+   .navbar-brand {
+  font-size: 28px;
+  font-weight: 700;
+  color: #3d9bce;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: "Merriweather", serif;
+  
+}
+
+.navbar-brand:hover {
+  color: #186a91; 
+} 
+
+.video1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  padding: 20px;
+}
+
+.video1 video {
+  max-width: 70%;
+  
+}
+
+.textos {
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-start; 
+}
+
+.textos h2 {
+  font-size: 22px;
+  font-weight: 400;
+  margin: 10px 0;
+  font-family: "Merriweather", serif;
+  color:#3d9bce ;
+  text-decoration: none;
+  
+}
+.textos h2:hover {
+  color: #186a91; 
+} 
+
+/* Tu CSS actual aquí... */
+
+/* ------------------------- */
+/* Estilos para celulares */
+@media (max-width: 768px) {
+  .video1 {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 10px;
+  }
+
+  .video1 video {
+    max-width: 90%;
+  }
+
+  .textos {
+    align-items: center;
+    text-align: center;
+  }
+
+  .textos h2 {
+    font-size: 18px;
+  }
+
+
+</style>
+    <title>Document</title>
+</head>
+<body>
+    
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Laboratorio Vitam</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Nosotros</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Análisis Clínicos</a>
+        </li>
+        <li class="nav-item">
+    <a class="nav-link" href="#">Radiología</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Obras sociales</a>
+  </li>
+        <li class="nav-item">
+    <a class="nav-link" href="#">Turnos</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Contacto</a>
+  </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Resultados
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Para pacientes</a></li>
+            <li><a class="dropdown-item" href="#">Para médicos</a></li>
+            
+          </ul>
+        </li>
+        
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<div class="video1">
+  <video src="https://www.pexels.com/es-es/download/video/6236753/" autoplay loop muted></video>
+
+  <div class="textos">
+    <h2><a href="#">Indicaciones de Análisis</a></h2>
+    <h2><a href="#">Horarios y Direcciones</a></h2>
+    <h2><a href="#">Formulario de Pre-ingreso</a></h2>
+  </div>
+
+ 
+</div>
+
+
+
+<footer class="bg-light text-center text-lg-start mt-5 p-3">
+  <div class="text-center">
+    <p class="mb-0">© 2025 Laboratorio Vita — Todos los derechos reservados</p>
+    <p class="mb-0">Av. Independencia 1234, Mar del Plata | Tel: (223) 456-7890</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+
+
+</body>
+</html>
