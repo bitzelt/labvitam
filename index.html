@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Test Cámara Principal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  background: black;
+  overflow: hidden;
+}
+canvas {
+  display: block;
+}
+</style>
+</head>
+
+<body>
+<script>
+let video;
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  pixelDensity(1);
+
+  video = createCapture({
+    video: {
+      facingMode: { ideal: "environment" }
+    },
+    audio: false
+  });
+
+  video.hide();
+}
+
+function draw() {
+  background(0);
+
+  let vw = video.width;
+  let vh = video.height;
+  let scale = min(width / vw, height / vh);
+  let w = vw * scale;
+  let h = vh * scale;
+  let x = (width - w) / 2;
+  let y = (height - h) / 2;
+
+  image(video, x, y, w, h);
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+</script>
+</body>
+</html>
