@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Technicolor + Face Detection</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ml5@0.12.2/dist/ml5.min.js"></script>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #0b0b0b;
+  overflow: hidden;
+}
+canvas {
+  display: block;
+}
+</style>
+</head>
+
+<body>
+<script>
+let video;
+let faceapi;
+let detections = [];
+let videoReady = false;
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  pixelDensity(1);
+
+  video = createCapture({
+    video: {
+      facingMode: { exact: "environment" }
+    },
+    audio: false
+  }, () => {
+    videoReady = true;
+  });
+
+  video.hide();
+
+  faceapi = ml5.faceApi(video, {
+    withLandmarks: false,
+    withDescriptors: false
+  }, () => {
+    detectFace();
+  });
+}
+
+function detectFace() {
+  faceapi.detect((err, res) => {
+    if (!err && res) detections = res;
+    detectFace();
+  });
+}
+
+function draw() {
+  background(11);
+  if (!videoReady) return;
+
+  // Mantener proporción real
+  let vw = video.width;
+  let vh = video.height;
+  let scale = min(width / vw, height / vh);
+  let w = vw * scale;
+  let h = vh * scale;
+  let x = (width - w) / 2;
+  let y = (height - h) / 2;
+
+  image(video, x, y, w, h);
+
+  loadPixels();
+
+  // Technicolor fuerte (separación de canales)
+  for (let i = 0; i < pixels.length; i += 4) {
+    let r = pixels[i];
+    let g = pixels[i + 1];
+    let b = pixels[i + 2];
+
+    let tr = constrain(r * 1.6 - g * 0.2, 0, 255);
+    let tg = constrain(g * 1.4 - b * 0.1, 0, 255);
+    let tb = constrain(b * 1.7 - r * 0.15, 0, 255);
+
+    pixels[i]     = tr;
+    pixels[i + 1] = tg;
+    pixels[i + 2] = tb;
+  }
+
+  updatePixels();
+
+  // Detección de rostro
+  noFill();
+  stroke(255);
+  strokeWeight(2);
+
+  for (let f of detections) {
+    let bb = f.alignedRect._box;
+    rect(
+      x + bb._x * scale,
+      y + bb._y * scale,
+      bb._width * scale,
+      bb._height * scale
+    );
+  }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+</script>
+</body>
+</html>
