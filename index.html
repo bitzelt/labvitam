@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Violetas Pastel + Rostros</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.min.js"></script>
+<script src="https://unpkg.com/ml5@0.12.2/dist/ml5.min.js"></script>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: black;
+}
+canvas { display:block; }
+</style>
+</head>
+
+<body>
+<script>
+let video;
+let faceapi;
+let detections = [];
+let ready = false;
+
+// Violetas pastel (de oscuro a claro)
+const violetPalette = [
+  [90, 80, 130],
+  [130, 120, 180],
+  [170, 160, 210],
+  [215, 205, 240]
+];
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  pixelDensity(1);
+
+  video = createCapture({
+    video: { facingMode: "environment" },
+    audio: false
+  });
+  video.size(640, 480);
+  video.hide();
+
+  const options = {
+    withLandmarks: false,
+    withExpressions: false,
+    withDescriptors: false
+  };
+
+  faceapi = ml5.faceApi(video, options, () => {
+    ready = true;
+    detectFaces();
+  });
+}
+
+function detectFaces() {
+  if (!ready) return;
+  faceapi.detect((err, result) => {
+    if (result) detections = result;
+    detectFaces();
+  });
+}
+
+function draw() {
+  background(0);
+  if (video.width === 0) return;
+
+  const vw = video.width;
+  const vh = video.height;
+
+  // COVER fullscreen
+  const scale = max(width / vw, height / vh);
+  const ox = (width - vw * scale) * 0.5;
+  const oy = (height - vh * scale) * 0.5;
+
+  video.loadPixels();
+  loadPixels();
+
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+
+      const sx = int((x - ox) / scale);
+      const sy = int((y - oy) / scale);
+      if (sx < 0 || sy < 0 || sx >= vw || sy >= vh) continue;
+
+      const i = (sx + sy * vw) * 4;
+      let r = video.pixels[i];
+      let g = video.pixels[i+1];
+      let b = video.pixels[i+2];
+
+      // BLANCO Y NEGRO CON CONTRASTE
+      let gray = (r + g + b) / 3;
+      gray = constrain((gray - 128) * 1.4 + 128, 0, 255);
+
+      // Mapear grises a violetas
+      const level =
+        gray < 70  ? 0 :
+        gray < 130 ? 1 :
+        gray < 190 ? 2 : 3;
+
+      const c = violetPalette[level];
+      const di = (x + y * width) * 4;
+
+      pixels[di]     = c[0];
+      pixels[di + 1] = c[1];
+      pixels[di + 2] = c[2];
+      pixels[di + 3] = 255;
+    }
+  }
+
+  updatePixels();
+
+  // 🔴 DIBUJO DE ROSTROS (opcional visual)
+  noFill();
+  stroke(255, 200);
+  strokeWeight(2);
+
+  for (let f of detections) {
+    const box = f.alignedRect._box;
+    const fx = ox + box._x * scale;
+    const fy = oy + box._y * scale;
+    const fw = box._width * scale;
+    const fh = box._height * scale;
+    rect(fx, fy, fw, fh);
+  }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+</script>
+</body>
+</html>
